@@ -9,9 +9,9 @@ class CRUDPullQuestion(CRUDBase[PullQuestions, PullQuestionCreate, PullQuestionC
     def get_previous_question(self, db: Session, pull_id: int) -> List[Question] | None:
         if pull_id <= 0:
             return []
-        qury = db.query(PullQuestions).filter(PullQuestions.id == pull_id-1).options(joinedload(PullQuestions.questions)).first()
-        if qury:
-            return qury.questions
+        query = db.query(PullQuestions).filter(PullQuestions.id == pull_id-1).options(joinedload(PullQuestions.questions)).first()
+        if query:
+            return query.questions
         else:
             return []
 

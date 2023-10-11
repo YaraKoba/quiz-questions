@@ -21,17 +21,29 @@ def fetch_questions(num: int) -> List[QuestionAPI]:
 
 
 def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[QuestionsCreate]:
+    """
+        Add unrepeated questions to the database.
+
+    Args:
+        db (Session): The SQLAlchemy database session.
+        num (int): The number of unrepeated questions to add.
+        question_pull (int): The ID of the question pull associated with the questions.
+
+    Returns:
+        List[QuestionsCreate]: A list of newly added questions in the form of QuestionsCreate objects.
+    """
     added_questions = []
     while num > 0:
         new_questions = fetch_questions(num)
-        new_questions = [QuestionsCreate(**question.model_dump(), pull_questions_id=question_pull) for question in new_questions]
+        new_questions = [QuestionsCreate(**question.model_dump(), pull_questions_id=question_pull)
+                         for question in new_questions]
         repeated, added = questions.create_multi(db=db, objs_in=new_questions)
         added_questions.extend(added)
         num = repeated
     return added_questions
 
 
-@router.post('/add-new-questions-and-get-previous-questions', response_model=List[QuestionsCreate | None])
+@router.post('/add-new-and-get-previous', response_model=List[QuestionsCreate | None])
 def get_empty_times(question_num: QuestionsIn, db: Session = Depends(get_db)):
     new_pull = pull.create(db=db, obj_in=PullQuestionCreate()).id
     added_questions = add_unrepeated_questions(db=db, num=question_num.questions_num, question_pull=new_pull)
