@@ -19,12 +19,7 @@
     cd quiz-questions
     ```
 2. Create a `.env` file in the project root directory and add the necessary environment variables. You can use the `.env.sample` file as a template.
-3. Install Python dependencies:
-    ```commandline
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-    ```
+
 ### Running the Application
 1. Start the application and PostgreSQL database with Docker Compose:
 
