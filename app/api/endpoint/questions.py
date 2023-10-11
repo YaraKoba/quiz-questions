@@ -44,7 +44,7 @@ def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[
 
 
 @router.post('/add-new-and-get-previous', response_model=List[QuestionsCreate | None])
-def get_empty_times(question_num: QuestionsIn, db: Session = Depends(get_db)):
+def add_new_questions(question_num: QuestionsIn, db: Session = Depends(get_db)):
     new_pull = pull.create(db=db, obj_in=PullQuestionCreate()).id
     added_questions = add_unrepeated_questions(db=db, num=question_num.questions_num, question_pull=new_pull)
     previous_questions = pull.get_previous_question(db=db, pull_id=new_pull)
