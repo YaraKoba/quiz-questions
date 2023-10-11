@@ -1,7 +1,15 @@
 # Quiz question
 ### By Kobyakov Yaroslav
 
-
+## Prerequisites:
+- Docker
+- Docker Compose
+- Python 3.8+
+- FastAPi
+- postgresSQL
+- alembic
+- pip
+- Git
 
 ## Getting Started
 ### Environment Setup
@@ -13,7 +21,9 @@
 2. Create a `.env` file in the project root directory and add the necessary environment variables. You can use the `.env.sample` file as a template.
 3. Install Python dependencies:
     ```commandline
-    pip install -r requirements.txt
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
     ```
 ### Running the Application
 1. Start the application and PostgreSQL database with Docker Compose:
@@ -23,10 +33,7 @@
     ```
 2. Run Alembic database migrations to set up the database schema:
     ```commandline
-    alembic upgrade head
+    docker-compose exec web alembic upgrade head
     ```
-3. Start the FastAPI application:
-    ```commandline
-    uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    ```
+3. Check it. Now you can go to http://127.0.0.1/docs. You will see the automatic interactive API documentation
 
