@@ -8,12 +8,12 @@ from typing import List
 class CRUDPullQuestion(CRUDBase[PullQuestions, PullQuestionCreate, PullQuestionCreate]):
     def get_previous_question(self, db: Session, pull_id: int) -> List[Question] | None:
         if pull_id <= 0:
-            return None
+            return []
         qury = db.query(PullQuestions).filter(PullQuestions.id == pull_id-1).options(joinedload(PullQuestions.questions)).first()
         if qury:
             return qury.questions
         else:
-            return None 
+            return []
 
 
 pull = CRUDPullQuestion(PullQuestions)

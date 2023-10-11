@@ -8,6 +8,7 @@ from app.crud import pull, questions
 
 router = APIRouter()
 
+
 def fetch_questions(num: int) -> List[QuestionAPI]:
     url = f"https://jservice.io/api/random?count={num}"
     try:
@@ -18,6 +19,7 @@ def fetch_questions(num: int) -> List[QuestionAPI]:
     except requests.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch question from the public API: {str(e)}")
 
+
 def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[QuestionsCreate]:
     added_questions = []
     while num > 0:
@@ -26,12 +28,12 @@ def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[
         repeated, added = questions.create_multi(db=db, objs_in=new_questions)
         added_questions.extend(added)
         num = repeated
-        print(num)
     return added_questions
+
 
 @router.post('/add-new-questions-and-get-previous-questions', response_model=List[QuestionsCreate | None])
 def get_empty_times(question_num: QuestionsIn, db: Session = Depends(get_db)):
     new_pull = pull.create(db=db, obj_in=PullQuestionCreate()).id
     added_questions = add_unrepeated_questions(db=db, num=question_num.questions_num, question_pull=new_pull)
-    previos_questions = pull.get_previous_question(db=db, pull_id=new_pull)
-    return previos_questions
+    previous_questions = pull.get_previous_question(db=db, pull_id=new_pull)
+    return previous_questions
