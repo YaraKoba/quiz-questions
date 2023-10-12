@@ -15,8 +15,9 @@ ValidNumber = Annotated[int, AfterValidator(check_num)]
 class QuestionsIn(BaseModel):
     questions_num: ValidNumber
     
-
+    
 class QuestionsBase(BaseModel):
+    id: int
     question: str
     answer: str
     created_at: datetime.datetime

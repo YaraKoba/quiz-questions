@@ -40,11 +40,19 @@ def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[
         repeated, added = questions.create_multi(db=db, objs_in=new_questions)
         added_questions.extend(added)
         num = repeated
+        print(F'repeated question: {num}')
+    return added_questions
+
+
+@router.post('/add-new', response_model=List[QuestionsCreate | None])
+def add_new_questions(question_num: QuestionsIn, db: Session = Depends(get_db)):
+    new_pull = pull.create(db=db, obj_in=PullQuestionCreate()).id
+    added_questions = add_unrepeated_questions(db=db, num=question_num.questions_num, question_pull=new_pull)
     return added_questions
 
 
 @router.post('/add-new-and-get-previous', response_model=List[QuestionsCreate | None])
-def add_new_questions(question_num: QuestionsIn, db: Session = Depends(get_db)):
+def add_new_questions_and_get_previous(question_num: QuestionsIn, db: Session = Depends(get_db)):
     new_pull = pull.create(db=db, obj_in=PullQuestionCreate()).id
     added_questions = add_unrepeated_questions(db=db, num=question_num.questions_num, question_pull=new_pull)
     previous_questions = pull.get_previous_question(db=db, pull_id=new_pull)
