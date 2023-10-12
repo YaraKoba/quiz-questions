@@ -8,6 +8,7 @@
 - FastAPi
 - postgresSQL
 - alembic
+- pytest
 - pip
 - Git
 
@@ -38,4 +39,11 @@
 
 1. `POST /questions/add-new` - this endpoint with content {"questions_num": integer} where `0 < integer <= 100`. The service requests from the public API `https://jservice.io/api/random?count=1` the number of questions specified in the received request. If there is the same question in the database, the service will send repeated requests to the public API until a unique question for the quiz is received. return added questions
 
-2. `POST /questions/add-new-and-get-previous` - this point is similar to the previous one, except return. Return previous added questions.
+
+## Tests
+
+Run this comand:
+```commandline
+pytest
+```
+tests files in `app/tests`
