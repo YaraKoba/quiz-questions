@@ -32,8 +32,7 @@ class QuestionsCreate(QuestionsBase):
     
 
 class QuestionsInDB(QuestionsBase):
-    id: int
-    add_date: datetime.date
+    add_date: datetime.datetime
     pull_questions_id: int
 
 

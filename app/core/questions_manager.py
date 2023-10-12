@@ -1,5 +1,7 @@
 from typing import List
 from sqlalchemy.orm import Session
+
+from app.models import Question
 from app.schemas import QuestionsCreate
 from app.crud import questions
 from app.core.fetching import fetch_questions
@@ -13,7 +15,7 @@ def filter_only_unique_question(new_questions: List[QuestionsCreate], db: Sessio
     return unique_questions
 
 
-def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[QuestionsCreate]:
+def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[Question]:
     """
         Add unrepeated questions to the database.
 
@@ -34,4 +36,5 @@ def add_unrepeated_questions(db: Session, num: int, question_pull: int) -> List[
         unique_questions.extend(filter_questions)
         num -= len(unique_questions) 
 
-    return unique_questions
+    added_que = questions.create_multi(db=db, questions_in=unique_questions)
+    return added_que
